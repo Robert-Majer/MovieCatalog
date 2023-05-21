@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MovieCatalog.ApplicationServices.API.Domain.MoviesRequestResponse;
 
 namespace MovieCatalog.Controllers
@@ -8,14 +9,18 @@ namespace MovieCatalog.Controllers
     [Route("[controller]")]
     public class MovieController : ApiControllerBase
     {
-        public MovieController(IMediator mediator) : base(mediator)
+        private readonly ILogger<MovieController> _logger;
+
+        public MovieController(IMediator mediator, ILogger<MovieController> logger) : base(mediator)
         {
+            _logger = logger;
         }
 
         [HttpGet]
         [Route("")]
         public Task<IActionResult> GetMovie([FromQuery] GetMovieRequest request)
         {
+            _logger.LogInformation($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]  Method: GET (return the last added movie)");
             return this.HandleRequest<GetMovieRequest, GetMovieResponse>(request);
         }
 
@@ -27,6 +32,7 @@ namespace MovieCatalog.Controllers
             {
                 MovieYear = movieYear
             };
+            _logger.LogInformation($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]  Method: GET/Year, Year: {request.MovieYear}");
             return this.HandleRequest<GetMoviesByYearRequest, GetMoviesByYearResponse>(request);
         }
 
@@ -38,6 +44,7 @@ namespace MovieCatalog.Controllers
             {
                 MovieGenre = movieGenre
             };
+            _logger.LogInformation($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]  Method: GET/Genre, Genre: {request.MovieGenre}");
             return this.HandleRequest<GetMoviesByGenreRequest, GetMoviesByGenreResponse>(request);
         }
 
@@ -45,6 +52,7 @@ namespace MovieCatalog.Controllers
         [Route("")]
         public Task<IActionResult> AddMovie([FromBody] AddMovieRequest request)
         {
+            _logger.LogInformation($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]  Method: POST, Title: {request.Title}, Year: {request.Year}, Genre: {request.Genre}");
             return this.HandleRequest<AddMovieRequest, AddMovieResponse>(request);
         }
     }

@@ -9,6 +9,6 @@ namespace MovieCatalog.ApplicationServices.API.Domain.MoviesRequestResponse
 {
     public class GetMoviesByGenreRequest : IRequest<GetMoviesByGenreResponse>
     {
-        public string MovieGenre { get; set; }
+        public string? MovieGenre { get; set; }
     }
 }

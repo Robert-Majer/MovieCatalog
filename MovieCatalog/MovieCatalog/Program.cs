@@ -2,11 +2,13 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Console;
 using MovieCatalog.ApplicationServices.API.Domain;
 using MovieCatalog.ApplicationServices.API.Validators;
 using MovieCatalog.ApplicationServices.Mappings;
 using MovieCatalog.DataAccess;
 using MovieCatalog.DataAccess.CQRS;
+using System.ComponentModel.DataAnnotations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,11 @@ builder.Services.AddAutoMapper(typeof(MoviesProfile).Assembly);
 builder.Services.AddMediatR(typeof(ResponseBase<>));
 
 builder.Services.AddControllers();
+
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddConsole();
+});
 
 builder.Services.AddDbContext<MovieCatalogStorageContext>(opt => opt.UseInMemoryDatabase("MovieCatalogDb"));
 

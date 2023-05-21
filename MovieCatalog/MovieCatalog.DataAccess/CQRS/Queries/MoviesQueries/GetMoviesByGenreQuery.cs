@@ -10,7 +10,7 @@ namespace MovieCatalog.DataAccess.CQRS.Queries.MoviesQueries
 {
     public class GetMoviesByGenreQuery : QueryBase<List<Movie>>
     {
-        public string Genre { get; set; }
+        public string? Genre { get; set; }
 
         public override async Task<List<Movie>> Execute(MovieCatalogStorageContext context)
         {
